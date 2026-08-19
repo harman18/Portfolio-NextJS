@@ -18,26 +18,27 @@ export type Social = {
 
 export const profile = {
   name: "Harmanjot Singh",
-  handle: "hsingh",
+  handle: "harmanjotsingh",
   roles: [
     "Software Development Engineer",
     "Network Test Automation",
-    "Security & Pentesting",
-    "Infra-Agnostic Tooling",
+    "Network Security & Pentesting",
+    "Infrastructure Tooling",
   ],
   tagline:
-    "Building infrastructure-independent automation for core networks — and breaking things (ethically) to make them safer.",
+    "Network & Security Engineer, Analysing and Enhancing networks — and breaking things (ethically) to make them safer.",
   about:
     "I'm a Software Development Engineer focused on network testing, automation, and security. At Zscaler I architect infrastructure-independent tooling for core networks, design pipelines that trigger/monitor automation, and build Python/Bash frameworks that help DevTest and QA teams validate production nodes. Outside of shipping reliable automation, I explore offensive security and pentesting to understand systems from an attacker's perspective.",
   location: "India",
-  email: "you@example.com", // TODO: replace with your real email
+  email: "harman062001@gmail.com",
+  // avatar: "/profile.png",
   available: true,
 };
 
 export const skills: SkillGroup[] = [
   {
     label: "Languages",
-    items: ["Python", "Bash", "TypeScript", "JavaScript", "SQL"],
+    items: ["Python", "Bash", "C/C++","JavaScript", "SQL"],
   },
   {
     label: "Network & Testing",
@@ -45,8 +46,8 @@ export const skills: SkillGroup[] = [
       "Network Test Automation",
       "Core Network Protocols",
       "Packet Analysis",
-      "CI/CD Pipelines",
       "Infra-Agnostic Tooling",
+      "Network Troubleshooting"
     ],
   },
   {
@@ -60,10 +61,6 @@ export const skills: SkillGroup[] = [
     ],
   },
   {
-    label: "Web & Frontend",
-    items: ["React", "Next.js", "Tailwind CSS", "Node.js", "Three.js"],
-  },
-  {
     label: "Platform / Ops",
     items: ["Git", "Docker", "MongoDB", "Linux", "Cloud (AWS/GCP)"],
   },
@@ -71,12 +68,22 @@ export const skills: SkillGroup[] = [
 
 export const experiences: Experience[] = [
   {
-    title: "Associate Software Engineer",
+    title: "Software Development Engineer",
     company: "Zscaler",
-    date: "Aug 2023 - Present",
+    date: "Nov 2023 - Jan 2023",
     points: [
       "Architecting infrastructure-independent automation tools for core networks.",
-      "Designing the UI for triggering, monitoring, and maintaining automation pipelines.",
+      "Testing Core Data Path Networking Features as SSL/TLS, IPSEC, DTLS, SVPN.",
+      "Developing internal automation tooling in Python/Bash as part of the framework.",
+      "Building network tools that help DevTest/QA teams test production nodes.",
+    ],
+  },
+  {
+    title: "Associate Software Engineer",
+    company: "Zscaler",
+    date: "Aug 2023 - Nov 2023",
+    points: [
+      "Architecting infrastructure-independent automation tools for core networks.",
       "Developing internal automation tooling in Python/Bash as part of the framework.",
       "Building network tools that help DevTest/QA teams test production nodes.",
     ],
@@ -120,9 +127,9 @@ export const projects = [
     stack: ["Python", "Bash", "CI/CD", "Linux"],
   },
   {
-    name: "Pipeline Control UI",
-    desc: "Web interface to trigger, monitor, and maintain large-scale automation pipelines for network testing.",
-    stack: ["React", "TypeScript", "Node.js"],
+    name: "Home Zero Trust System",
+    desc: "A secure ZT to access home network with microservice architecture, providing data store, remote print and secure private access. ",
+    stack: ["Python", "Flask", "Next.js", "Distributed Sytem"],
   },
   {
     name: "Network Test Tooling",
@@ -137,10 +144,10 @@ export const projects = [
 ];
 
 export const socials: Social[] = [
-  { name: "GitHub", handle: "@harmanjot", link: "https://github.com/" }, // TODO
-  { name: "LinkedIn", handle: "in/harmanjot", link: "https://linkedin.com/" }, // TODO
-  { name: "Twitter", handle: "@harmanjot", link: "https://twitter.com/" }, // TODO
-  { name: "Email", handle: "you@example.com", link: "mailto:you@example.com" }, // TODO
+  { name: "GitHub", handle: "github/harmanjot", link: "https://github.com/harman18" }, // TODO
+  { name: "LinkedIn", handle: "in/harmanjot", link: "https://www.linkedin.com/in/harmanjot--singh/" }, // TODO
+  // { name: "Twitter", handle: "@harmanjot", link: "https://twitter.com/" }, // TODO
+  { name: "Email", handle: "@harmanjot", link: "mailto:harman062001@gmail.com" }, // TODO
 ];
 
 export const navLinks = [

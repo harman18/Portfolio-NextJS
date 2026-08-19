@@ -16,7 +16,7 @@ export default function About() {
           <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
             {[
               ["Role", "SDE"],
-              ["Focus", "Network Testing"],
+              ["Focus", "Network Security"],
               ["Interest", "Security / Pentest"],
               ["Location", profile.location],
               ["Experience", "Zscaler"],
@@ -52,7 +52,20 @@ export default function About() {
             </div>
           </div>
           <div className="mt-3 text-center font-mono text-xs text-muted">
-            // avatar placeholder — drop an image in here
+            
+            {/* <div className="relative" info="Profile Pic placement" alt="Profile Image">
+              <div className="aspect-square overflow-hidden rounded-2xl neon-border">
+                <img
+                  src={profile.avatar}
+                  alt={profile.name}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div className="mt-3 text-center font-mono text-xs text-muted">
+                // {profile.handle}
+              </div>
+            </div> */}
+
           </div>
         </div>
       </div>
