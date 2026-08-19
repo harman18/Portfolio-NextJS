@@ -3,9 +3,9 @@ import "./globals.css";
 import BootScreen from "@/components/BootScreen";
 
 export const metadata: Metadata = {
-  title: "Harmanjot Singh | SDE — Network Testing & Security",
+  title: "Harmanjot Singh | SDE — Network & Security Engineer",
   description:
-    "Software Development Engineer specializing in network test automation, infrastructure-independent tooling, and offensive security / pentesting.",
+    "Software Development Engineer specializing in Computer Networking, infrastructure-independent tooling in distributed system and interest in offensive security / pentesting.",
 };
 
 export default function RootLayout({

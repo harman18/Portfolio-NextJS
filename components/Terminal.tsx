@@ -15,13 +15,40 @@ type Line = { text: string; cls?: string };
 const prompt = "visitor@harmanjot:~$";
 
 const BANNER = [
-  "  _   _   _    _   _ ___ ___ ___ ",
-  " | | | | /_\\  | | | / __| __/ __|",
-  " | |_| |/ _ \\ | |_| \\__ \\ _|\\__ \\",
-  "  \\___//_/ \\_\\ \\___/|___/___|___/",
-  "",
+  " _   _    _    ____  __  __    _    _   _ ",
+  "| | | |  / \\  |  _ \\|  \\/  |  / \\  | \\ | |",
+  "| |_| | / _ \\ | |_) | |\\/| | / _ \\ |  \\| |",
+  "|  _  |/ ___ \\|  _ <| |  | |/ ___ \\| |\\  |",
+  "|_| |_/_/   \\_\\_| \\_\\_|  |_/_/   \\_\\_| \\_|",
   "  // interactive portfolio shell — type 'help'",
 ];
+
+type Visitor = {
+  ip?: string;
+  host?: string;
+  browser?: string;
+  os?: string;
+  language?: string;
+  referrer?: string;
+};
+
+function visitorBanner(v: Visitor): Line[] {
+  const N = 52;
+  const top = "┌" + "─".repeat(N - 2) + "┐";
+  const bot = "└" + "─".repeat(N - 2) + "┘";
+  const row = (label: string, value: string) =>
+    "│ " + `${label.padEnd(10)}: ${value}`.padEnd(N - 4) + " │";
+  return [
+    { text: top, cls: "text-accent" },
+    { text: row("ip", v.ip ?? "unknown"), cls: "text-[#c7cde6]" },
+    { text: row("host", v.host ?? "unknown"), cls: "text-[#c7cde6]" },
+    { text: row("browser", v.browser ?? "unknown"), cls: "text-[#c7cde6]" },
+    { text: row("os", v.os ?? "unknown"), cls: "text-[#c7cde6]" },
+    { text: row("language", v.language ?? "unknown"), cls: "text-[#c7cde6]" },
+    { text: row("referred", v.referrer || "direct"), cls: "text-[#c7cde6]" },
+    { text: bot, cls: "text-accent" },
+  ];
+}
 
 export default function Terminal() {
   const { terminalOpen, closeTerminal, setTheme, navigate, theme } = useUI();
@@ -29,20 +56,40 @@ export default function Terminal() {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [hIndex, setHIndex] = useState(-1);
-  const [booted, setBooted] = useState(false);
   const [minimized, setMinimized] = useState(false);
   const [maximized, setMaximized] = useState(false);
+  const bootedRef = useRef(false);
 
   const outRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (terminalOpen) {
-      inputRef.current?.focus();
-      if (!booted) {
-        setBooted(true);
+    if (!terminalOpen) {
+      // reset so the next open re-boots cleanly
+      bootedRef.current = false;
+      setLines([]);
+      return;
+    }
+    inputRef.current?.focus();
+    if (bootedRef.current) return;
+    bootedRef.current = true;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/visitor");
+        const v = (await res.json()) as Visitor;
         setLines([
-          ...BANNER.map((t) => ({ text: t, cls: "text-accent" })),
+          ...visitorBanner(v),
+          { text: "" },
+          {
+            text: `session started · theme=${theme} · type 'help' for commands`,
+            cls: "text-muted",
+          },
+          { text: "" },
+        ]);
+      } catch {
+        setLines([
+          { text: "visitor recon unavailable", cls: "text-yellow-400" },
           { text: "" },
           {
             text: `session started · theme=${theme} · type 'help' for commands`,
@@ -51,8 +98,8 @@ export default function Terminal() {
           { text: "" },
         ]);
       }
-    }
-  }, [terminalOpen, booted, theme]);
+    })();
+  }, [terminalOpen, theme]);
 
   useEffect(() => {
     outRef.current?.scrollTo({ top: outRef.current.scrollHeight });
