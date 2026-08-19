@@ -70,7 +70,7 @@ export const experiences: Experience[] = [
   {
     title: "Software Development Engineer",
     company: "Zscaler",
-    date: "Nov 2023 - Jan 2023",
+    date: "Oct 2024 - Jan 2025",
     points: [
       "Architecting infrastructure-independent automation tools for core networks.",
       "Testing Core Data Path Networking Features as SSL/TLS, IPSEC, DTLS, SVPN.",
@@ -81,7 +81,7 @@ export const experiences: Experience[] = [
   {
     title: "Associate Software Engineer",
     company: "Zscaler",
-    date: "Aug 2023 - Nov 2023",
+    date: "Aug 2023 - Oct 2024",
     points: [
       "Architecting infrastructure-independent automation tools for core networks.",
       "Developing internal automation tooling in Python/Bash as part of the framework.",
