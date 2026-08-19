@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* fonts */
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* ---- DARK (default) ---- */
+  --bg: #050816;
+  --surface: #0d1230;
+  --panel: #0a0e27;
+  --text: #e6e9f5;
+  --text-soft: #c7cde6;
+  --muted: #8a93b2;
+  --border: rgba(255, 255, 255, 0.08);
+
+  /* accent (overridden by [data-theme]) */
+  --accent: #22d3ee;
+  --accent2: #38bdf8;
+}
+
+/* ---- LIGHT: vibrant multi-color ---- */
+html[data-mode="light"] {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --panel: #ffffff;
+  --text: #0b1020;
+  --text-soft: #3b4256;
+  --muted: #6b7385;
+  --border: rgba(15, 23, 42, 0.1);
+
+  /* multi-color palette (cyan -> purple -> pink) */
+  --accent: #6d28d9;
+  --accent2: #db2777;
+  --grad: linear-gradient(90deg, #06b6d4, #8b5cf6, #db2777);
+}
+
+/* accent presets — each also defines a light-mode gradient */
+html[data-theme="cyan"] {
+  --accent: #22d3ee;
+  --accent2: #38bdf8;
+  --grad: linear-gradient(90deg, #06b6d4, #22d3ee, #6366f1);
+}
+html[data-theme="matrix"] {
+  --accent: #39ff14;
+  --accent2: #00ffa3;
+  --grad: linear-gradient(90deg, #22d3ee, #39ff14, #10b981);
+}
+html[data-theme="synth"] {
+  --accent: #ff2bd6;
+  --accent2: #7c3aed;
+  --grad: linear-gradient(90deg, #8b5cf6, #ff2bd6, #ec4899);
+}
+html[data-theme="amber"] {
+  --accent: #ffb000;
+  --accent2: #ff5e00;
+  --grad: linear-gradient(90deg, #f59e0b, #ffb000, #ff5e00);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Neon text — single accent in dark, gradient in light */
+.neon {
+  color: var(--accent);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+html[data-mode="light"] .neon {
+  color: transparent;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: none;
+}
+
+.neon-border {
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 25%, transparent),
+    inset 0 0 12px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+html[data-mode="light"] .neon-border {
+  border-color: color-mix(in srgb, var(--accent2) 35%, transparent);
+  box-shadow: 0 6px 24px color-mix(in srgb, #8b5cf6 14%, transparent);
+}
+
+/* Animated grid background */
+.grid-bg {
+  background-image: linear-gradient(
+      color-mix(in srgb, var(--accent) 12%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 12%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 44px 44px;
+  mask-image: radial-gradient(circle at 50% 0%, black, transparent 75%);
+}
+
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.03) 0px,
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  pointer-events: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--panel);
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent) 50%, transparent);
+  border-radius: 8px;
+}
+
+.caret::after {
+  content: "▋";
+  margin-left: 2px;
+  color: var(--accent);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: none;
+}
