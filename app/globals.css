@@ -166,3 +166,61 @@ html[data-mode="light"] .neon-border {
   opacity: 1;
   transform: none;
 }
+
+/* Glitch on hover (RGB-split ghosts) */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.glitch:hover::before {
+  opacity: 0.9;
+  color: #ff00c1;
+  left: 2px;
+  top: -1px;
+  animation: glitchA 0.35s steps(2, end);
+}
+.glitch:hover::after {
+  opacity: 0.9;
+  color: #00fff9;
+  left: -2px;
+  top: 1px;
+  animation: glitchB 0.35s steps(2, end);
+}
+@keyframes glitchA {
+  0% {
+    clip-path: inset(0 0 60% 0);
+  }
+  50% {
+    clip-path: inset(40% 0 20% 0);
+  }
+  100% {
+    clip-path: inset(0 0 70% 0);
+  }
+}
+@keyframes glitchB {
+  0% {
+    clip-path: inset(60% 0 0 0);
+  }
+  50% {
+    clip-path: inset(20% 0 40% 0);
+  }
+  100% {
+    clip-path: inset(70% 0 0 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glitch::before,
+  .glitch::after {
+    display: none;
+  }
+}

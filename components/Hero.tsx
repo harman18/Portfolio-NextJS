@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { profile } from "@/app/data/portfolio";
 import { useUI } from "./Providers";
+import ParticleField from "./ParticleField";
 
 export default function Hero() {
   const { openTerminal, navigate } = useUI();
@@ -33,6 +34,10 @@ export default function Hero() {
       id="home"
       className="relative mx-auto flex min-h-screen max-w-6xl flex-col justify-center px-6 pt-24"
     >
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <ParticleField />
+      </div>
+
       <div className="font-mono text-sm text-muted">
         <span className="neon">$</span> whoami
         <span className="ml-2 animate-blink text-accent">▋</span>
@@ -40,7 +45,9 @@ export default function Hero() {
 
       <h1 className="mt-4 font-mono text-4xl font-extrabold leading-tight text-fg sm:text-6xl lg:text-7xl">
         Hi, I&apos;m{" "}
-        <span className="neon">{profile.name.split(" ")[0]}</span>
+        <span className="neon glitch" data-text={profile.name.split(" ")[0]}>
+          {profile.name.split(" ")[0]}
+        </span>
       </h1>
 
       <p className="mt-3 font-mono text-xl text-soft sm:text-2xl">
