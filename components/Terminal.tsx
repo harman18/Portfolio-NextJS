@@ -30,6 +30,8 @@ export default function Terminal() {
   const [history, setHistory] = useState<string[]>([]);
   const [hIndex, setHIndex] = useState(-1);
   const [booted, setBooted] = useState(false);
+  const [minimized, setMinimized] = useState(false);
+  const [maximized, setMaximized] = useState(false);
 
   const outRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -88,6 +90,7 @@ export default function Terminal() {
           { text: "  banner            print the logo" },
           { text: "  date              current date/time" },
           { text: "  echo <text>       print text" },
+          { text: "  shortcuts         list keyboard shortcuts" },
           { text: "  sudo              ;)" },
           { text: "  clear             clear the screen" },
           { text: "  exit | close      close the terminal" },
@@ -207,6 +210,22 @@ export default function Terminal() {
         ]);
         break;
 
+      case "shortcuts":
+        print([
+          { text: "Keyboard shortcuts:", cls: "text-accent" },
+          { text: "  ` (backtick)      toggle terminal" },
+          { text: "  esc / ctrl+c      close terminal" },
+          { text: "  ctrl+l            clear screen" },
+          { text: "  ↑ / ↓              command history" },
+          { text: "  ctrl+k            command palette" },
+          { text: "" },
+          {
+            text: "commands: help, about, skills, resume, projects, contact, open, theme, banner, date, echo, sudo, clear, exit",
+            cls: "text-muted",
+          },
+        ]);
+        break;
+
       case "clear":
       case "cls":
         setLines([]);
@@ -251,10 +270,64 @@ export default function Terminal() {
     } else if (e.key === "l" && e.ctrlKey) {
       e.preventDefault();
       setLines([]);
+    } else if (e.key === "c" && e.ctrlKey) {
+      // like a real shell: cancel the current line and drop a fresh prompt
+      e.preventDefault();
+      print({ text: `${prompt} ${input}`, cls: "text-white" });
+      setInput("");
+      setHIndex(-1);
     }
   };
 
   if (!terminalOpen) return null;
+
+  const titleBar = (
+    <div className="flex items-center gap-2 border-b border-white/10 bg-white/5 px-4 py-2">
+      <button
+        onClick={closeTerminal}
+        aria-label="Close"
+        className="h-3 w-3 rounded-full bg-red-400/80 transition hover:scale-110"
+      />
+      <button
+        onClick={() => {
+          setMinimized((m) => !m);
+          setMaximized(false);
+        }}
+        aria-label="Minimize"
+        className="h-3 w-3 rounded-full bg-yellow-400/80 transition hover:scale-110"
+      />
+      <button
+        onClick={() => {
+          setMaximized((m) => !m);
+          setMinimized(false);
+        }}
+        aria-label="Maximize"
+        className="h-3 w-3 rounded-full bg-green-400/80 transition hover:scale-110"
+      />
+      <span className="ml-3 font-mono text-xs text-muted">
+        bash — visitor@harmanjot
+      </span>
+      <button
+        onClick={closeTerminal}
+        className="ml-auto font-mono text-xs text-muted transition hover:text-accent"
+      >
+        [ esc ]
+      </button>
+    </div>
+  );
+
+  // minimized: small floating bar at the bottom
+  if (minimized) {
+    return (
+      <div className="fixed bottom-4 left-1/2 z-50 w-[min(92vw,440px)] -translate-x-1/2 overflow-hidden rounded-xl border border-accent/40 bg-[#060814]/95 shadow-glow backdrop-blur">
+        {titleBar}
+      </div>
+    );
+  }
+
+  const containerCls = maximized
+    ? "flex h-full w-full flex-col overflow-hidden border border-accent/40 bg-[#060814]/95 shadow-glow backdrop-blur"
+    : "flex h-[70vh] w-full max-w-3xl flex-col overflow-hidden rounded-xl border border-accent/40 bg-[#060814]/95 shadow-glow backdrop-blur";
 
   return (
     <div
@@ -263,25 +336,8 @@ export default function Terminal() {
         if (e.target === e.currentTarget) closeTerminal();
       }}
     >
-      <div
-        className="flex h-[70vh] w-full max-w-3xl flex-col overflow-hidden rounded-xl border border-accent/40 bg-[#060814]/95 shadow-glow backdrop-blur"
-        onMouseDown={(e) => e.stopPropagation()}
-      >
-        {/* title bar */}
-        <div className="flex items-center gap-2 border-b border-white/10 bg-white/5 px-4 py-2">
-          <span className="h-3 w-3 rounded-full bg-red-400/80" />
-          <span className="h-3 w-3 rounded-full bg-yellow-400/80" />
-          <span className="h-3 w-3 rounded-full bg-green-400/80" />
-          <span className="ml-3 font-mono text-xs text-muted">
-            bash — visitor@harmanjot
-          </span>
-          <button
-            onClick={closeTerminal}
-            className="ml-auto font-mono text-xs text-muted transition hover:text-accent"
-          >
-            [ esc ]
-          </button>
-        </div>
+      <div className={containerCls} onMouseDown={(e) => e.stopPropagation()}>
+        {titleBar}
 
         {/* output */}
         <div
@@ -291,7 +347,7 @@ export default function Terminal() {
         >
           {lines.map((l, i) => (
             <div key={i} className={l.cls ?? "text-[#c7cde6] whitespace-pre-wrap"}>
-              {l.text || " "}
+              {l.text || " "}
             </div>
           ))}
 
@@ -311,8 +367,11 @@ export default function Terminal() {
         </div>
 
         <div className="border-t border-white/10 px-4 py-1.5 font-mono text-[11px] text-muted">
-          tip: press <span className="text-accent">`</span> to toggle · ↑/↓ for
-          history · <span className="text-accent">ctrl+l</span> to clear
+          tip: <span className="text-accent">`</span> toggle ·{" "}
+          <span className="text-accent">esc</span>/<span className="text-accent">ctrl+c</span>{" "}
+          close · <span className="text-accent">↑/↓</span> history ·{" "}
+          <span className="text-accent">ctrl+l</span> clear · type{" "}
+          <span className="text-accent">shortcuts</span>
         </div>
       </div>
     </div>

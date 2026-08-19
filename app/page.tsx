@@ -10,6 +10,8 @@ import Terminal from "@/components/Terminal";
 import { UIProvider } from "@/components/Providers";
 import ScrollProgress from "@/components/ScrollProgress";
 import ThemeToggle from "@/components/ThemeToggle";
+import SystemHUD from "@/components/SystemHUD";
+import CommandPalette from "@/components/CommandPalette";
 
 export default function Page() {
   return (
@@ -26,6 +28,8 @@ export default function Page() {
         <Contact />
       </main>
       <ThemeToggle />
+      <SystemHUD />
+      <CommandPalette />
       <Terminal />
     </UIProvider>
   );

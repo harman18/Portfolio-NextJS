@@ -1,5 +1,5 @@
 import { experiences } from "@/app/data/portfolio";
-import { SectionTitle } from "./About";
+import SectionTitle from "./SectionTitle";
 import Reveal from "./Reveal";
 
 export default function Experience() {
